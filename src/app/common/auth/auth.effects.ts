@@ -25,5 +25,13 @@ export class AuthEffects {
     .ofType(AuthActions.LOGOUT)
     .switchMap(() => this.authService.logout());
 
+  @Effect()
+  public reset_password$: Observable<any> = this.actions$
+    .ofType(AuthActions.RESET_PASSWORD)
+    .switchMap((username) => this.authService.reset_password(username)
+      .map(() => this.authActions.resetPasswordSuccess())
+      .catch((error) => of(this.authActions.resetPasswordFailed(error)))
+    );
+
   constructor(private actions$: Actions, private authService: AuthService, private authActions: AuthActions) {}
 }
