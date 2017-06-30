@@ -4,11 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { AgmCoreModule } from 'angular2-google-maps/core';
-import { MapsAPILoader } from 'angular2-google-maps/core';
+import { AgmCoreModule, MapsAPILoader } from '@agm/core';
 
+import { environment } from '../../../environments/environment';
 import { ComplaintComponent } from './complaint.component';
 
+
+// TODO: fix the multiple inclusion error.
+// Current agm version defines a global google variable which makes mocking hard.
 describe('ComplaintComponent', () => {
   let component: ComplaintComponent;
   let fixture: ComponentFixture<ComplaintComponent>;
@@ -23,7 +26,7 @@ describe('ComplaintComponent', () => {
   navigator.geolocation.getCurrentPosition = navigatorSpy;
 
   class MockMapsAPILoader {
-    load() { return { then: () => null } }
+    load() { return Promise.resolve() }
   };
 
   beforeEach(async(() => {
@@ -33,12 +36,14 @@ describe('ComplaintComponent', () => {
       imports: [
         FormsModule,
         AgmCoreModule.forRoot({
+          apiKey: environment.googleMapsAPIKey,
           libraries: ['places']
-        })],
-      providers: [{
-        provide: MapsAPILoader,
-        useClass: MockMapsAPILoader
-      }]
+        })
+      ],
+      // providers: [{
+      //   provide: MapsAPILoader,
+      //   useClass: MockMapsAPILoader
+      // }]
     })
     .compileComponents();
   }));

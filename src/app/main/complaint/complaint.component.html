@@ -5,9 +5,9 @@
     <div class="form-group">
       <label>Location</label>
       <input placeholder="Search location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #locationInput [(ngModel)]="location" name="location">
-      <sebm-google-map style="height: 40vh;" [latitude]="mapPosition.latitude" [longitude]="mapPosition.longitude" (mapClick)="setPosition($event)">
-        <sebm-google-map-marker [latitude]="markedCoords.latitude" [longitude]="markedCoords.longitude"></sebm-google-map-marker>
-      </sebm-google-map>
+      <agm-map style="height: 40vh;" [latitude]="mapPosition.latitude" [longitude]="mapPosition.longitude" (mapClick)="setPosition($event)" [clickableIcons]=false [streetViewControl]=false>
+        <agm-marker [latitude]="markedCoords.latitude" [longitude]="markedCoords.longitude"></agm-marker>
+      </agm-map>
     </div>
     <button type="submit">Create</button>
   </form>
