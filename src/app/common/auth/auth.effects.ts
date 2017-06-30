@@ -26,9 +26,9 @@ export class AuthEffects {
     .switchMap(() => this.authService.logout());
 
   @Effect()
-  public reset_password$: Observable<any> = this.actions$
+  public resetPassword$: Observable<any> = this.actions$
     .ofType(AuthActions.RESET_PASSWORD)
-    .switchMap((username) => this.authService.reset_password(username)
+    .switchMap((username) => this.authService.resetPassword(username.payload)
       .map(() => this.authActions.resetPasswordSuccess())
       .catch((error) => of(this.authActions.resetPasswordFailed(error)))
     );
