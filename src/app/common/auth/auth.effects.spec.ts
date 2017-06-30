@@ -30,6 +30,9 @@ describe('AuthEffects', () => {
       return credentials.id === mockUser.id ? Observable.of(mockUser) : Observable.throw(error);
     }
 
+    public resetPassword(username: string) {
+      return username === mockUser.username ? Observable.of() : Observable.throw(error);
+    }
   }
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
@@ -67,6 +70,26 @@ describe('AuthEffects', () => {
       runner.queue(authActions.login({}));
 
       authEffects.login$.subscribe((data => {
+        expect(data).toEqual(expected);
+      }));
+    });
+  });
+
+  describe('resetPassword$', () => {
+    it('should return a reset_password success action on success', () => {
+      const expected = authActions.resetPasswordSuccess(mockUser.username);
+      runner.queue(authActions.resetPassword(mockUser.username));
+
+      authEffects.resetPassword$.subscribe((data => {
+        expect(data).toEqual(expected);
+      }));
+    });
+
+    it('should return a reset_password fail action on fail', () => {
+      const expected = authActions.resetPasswordFailed(error);
+      runner.queue(authActions.resetPassword('an invalid user'));
+
+      authEffects.resetPassword$.subscribe((data => {
         expect(data).toEqual(expected);
       }));
     });

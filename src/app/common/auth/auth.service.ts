@@ -50,4 +50,9 @@ export class AuthService {
       .map(() => this.httpService.setAuthToken());
   }
 
+  public resetPassword(username: string): Observable<any> {
+    return this.httpService.post('/api/v1/accounts/reset_password', {username: username})
+      .map(() => this.httpService.setAuthToken());
+  }
+
 }

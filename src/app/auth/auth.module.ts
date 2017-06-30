@@ -4,10 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', children: [
       { path: '', component: LoginComponent },
+      { path: 'reset_password', component: ResetPasswordComponent },
     ]
   }
 ];
@@ -16,6 +18,7 @@ export const routes: Routes = [
   bootstrap: [ LoginComponent ],
   declarations: [
     LoginComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     CommonModule,
