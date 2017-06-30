@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs/Rx';
+
 import { AuthActions } from '../../common/auth';
 import { getAuthState } from '../../common/store/reducers';
 
@@ -8,13 +10,14 @@ import { getAuthState } from '../../common/store/reducers';
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })
-export class ResetPasswordComponent {
+export class ResetPasswordComponent implements OnDestroy {
   public username = '';
   public errorMessage = '';
   public successMessage = '';
+  private authStateSubscription: Subscription
 
   constructor(private store: Store<any>, private authActions: AuthActions) {
-    this.store.select(getAuthState).subscribe(({ isLoggedIn, inProgress, resetPassword, error }) => {
+    this.authStateSubscription = this.store.select(getAuthState).subscribe(({ isLoggedIn, inProgress, resetPassword, error }) => {
       if (resetPassword) {
         this.successMessage = 'A message with reset password instructions was sent to your registered email address.'
         this.errorMessage = '';
@@ -25,8 +28,12 @@ export class ResetPasswordComponent {
     });
   }
 
-  resetPassword() {
+  public resetPassword() {
     this.store.dispatch(this.authActions.resetPassword(this.username));
+  }
+
+  public ngOnDestroy() {
+    this.authStateSubscription.unsubscribe();
   }
 
   private errorHandler(error) {

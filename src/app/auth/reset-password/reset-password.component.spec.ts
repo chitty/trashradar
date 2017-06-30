@@ -81,4 +81,10 @@ describe('ResetPasswordComponent', () => {
     });
     expect(component.errorMessage).toEqual('Unforseen error.');
   });
+
+  it('should unsubscribe on destroy', () => {
+    expect(storeSubject.observers.length).toEqual(1, 'Should subscribe initially');
+    fixture.destroy();
+    expect(storeSubject.observers.length).toEqual(0, 'Should unsubscribe after destruction');
+  });
 });
