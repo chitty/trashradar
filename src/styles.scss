@@ -4,3 +4,8 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
 @import url('https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Montserrat:400,700');
+
+// Places selection
+.pac-container {
+  z-index: $zindex-modal + 1;
+}

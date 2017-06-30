@@ -7,4 +7,5 @@ export const environment = {
   production: false,
   baseUrl: 'http://localhost:8000',
   enableStoreDevtools: true,
+  googleMapsAPIKey: 'AIzaSyAha28urvmbMnap1sATx10BWL4WjNN0qKM',
 };

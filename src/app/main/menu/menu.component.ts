@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthActions } from '../../common/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { AuthActions } from '../../common/auth';
+import { ComplaintComponent } from '../complaint/complaint.component';
 
 @Component({
   selector: 'app-menu',
@@ -10,9 +13,18 @@ import { Store } from '@ngrx/store';
 })
 export class MenuComponent implements OnInit {
 
-  constructor(private authActions: AuthActions, private router: Router, private store: Store<any>) { }
+  constructor(
+    private authActions: AuthActions,
+    private router: Router,
+    private store: Store<any>,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit() {
+  }
+
+  openComplaintModal() {
+    this.modalService.open(ComplaintComponent);
   }
 
   logout() {
