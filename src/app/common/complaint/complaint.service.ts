@@ -13,7 +13,7 @@ export class ComplaintService extends ModelService<Complaint> {
    * @param {DjangoClientService} apiHttp
    */
   constructor(apiHttp: DjangoClientService) {
-    super('/api/1/people/', apiHttp);
+    super('/api/v1/complaints', apiHttp);
   }
 
 }

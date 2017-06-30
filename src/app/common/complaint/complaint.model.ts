@@ -1,5 +1,5 @@
 /* tslint:disable:variable-name */
-import { Point } from '@types/geojson';
+import { Point } from 'geojson';
 
 import { Entity } from '../entity';
 

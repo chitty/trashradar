@@ -83,7 +83,7 @@ export class ModelService<T extends IModel> {
    * @param {object} query - query parameters to be appended
    * @returns {Observable<T[]>} - returns an observable with all items from all pages as a single event
    */
-  public getAllPages(query?: object): Observable<T[]> {
+  public getAllPages(query?: object): Observable<any[]> {
     return this.find(query)
       .switchMap(({ results, next }: any) => (next ? this.getPages(next, results) : Observable.from(results)))
       .toArray();
