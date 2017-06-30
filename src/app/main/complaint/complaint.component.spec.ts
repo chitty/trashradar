@@ -25,10 +25,6 @@ describe('ComplaintComponent', () => {
   const navigatorSpy = jasmine.createSpy('getCurrentPosition').and.callFake((func) => func(testCoords));
   navigator.geolocation.getCurrentPosition = navigatorSpy;
 
-  class MockMapsAPILoader {
-    load() { return Promise.resolve() }
-  };
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ComplaintComponent ],
@@ -40,10 +36,6 @@ describe('ComplaintComponent', () => {
           libraries: ['places']
         })
       ],
-      // providers: [{
-      //   provide: MapsAPILoader,
-      //   useClass: MockMapsAPILoader
-      // }]
     })
     .compileComponents();
   }));
