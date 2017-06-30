@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs/Rx';
 import { AuthActions } from '../../common/auth';
 import { ResetPasswordComponent } from './reset-password.component';
 
-xdescribe('ResetPasswordComponent', () => {
+describe('ResetPasswordComponent', () => {
   let component: ResetPasswordComponent;
   let fixture: ComponentFixture<ResetPasswordComponent>;
   const mockBackend: MockBackend = new MockBackend();
@@ -52,7 +52,7 @@ xdescribe('ResetPasswordComponent', () => {
   it('should dispatch resetPassword action', () => {
     const username = 'somebody';
     component.username = username;
-    component.reset_password();
+    component.resetPassword();
     const actions = fixture.debugElement.injector.get(AuthActions);
     expect(actions.resetPassword).toHaveBeenCalledWith(username);
   });
