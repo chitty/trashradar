@@ -7,6 +7,13 @@ interface IModel {
   id?: number;
 }
 
+interface Paginated<T> {
+  count: number;
+  next?: string;
+  previous?: string;
+  results: T[];
+}
+
 /**
  * Model Service.
  *
@@ -41,9 +48,9 @@ export class ModelService<T extends IModel> {
    * Search for a collection of models, pass null to get all.
    *
    * @param {object} query
-   * @returns {Observable<T[]>}
+   * @returns {Observable<T[]> | Paginated<T>}
    */
-  public find(query: object): Observable<T[]> {
+  public find(query: object): Observable<T[] | Paginated<T>> {
     const params: URLSearchParams = new URLSearchParams();
     if (query && typeof query === 'object') {
       Object.entries(query).forEach(([key, value]) => params.set(key, value));
@@ -85,7 +92,7 @@ export class ModelService<T extends IModel> {
    */
   public getAllPages(query?: object): Observable<T[]> {
     return this.find(query)
-      .switchMap(({ results, next }: any) => (next ? this.getPages(next, results) : Observable.from(results)))
+      .switchMap(({ results, next }: Paginated<T>) => (next ? this.getPages(next, results) : Observable.from(results)))
       .toArray();
   }
 
