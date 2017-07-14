@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
+import { Store } from '@ngrx/store';
+
+import { ComplaintActions } from '../../common/complaint';
 
 export class Coordinates {
-  latitude: number;
-  longitude: number;
+  type: 'Point';
+  coordinates: [number, number];
 }
 
 @Component({
@@ -15,15 +17,29 @@ export class Coordinates {
 export class ComplaintComponent implements OnInit {
   @ViewChild('locationInput') public locationElement: ElementRef;
   public markedCoords: Coordinates = {
-    latitude: 40.7485413,
-    longitude: -73.98575770000002
+    type: 'Point',
+    coordinates: [40.7485413, -73.98575770000002],
   };
-  public mapPosition: Coordinates = this.markedCoords;
-  public location = '';
+  public form = {
+    image: null,
+    location: { ...this.markedCoords },
+    entity: null,
+  };
+  public imagePreview = '';
+  public mapPosition = '';
   public geocoder: google.maps.Geocoder;
+  public staticEntities = [
+    { name: 'Real entity', id: 1 },
+    { name: 'Gov\'na', id: 2 },
+    { name: 'Da police', id: 3 },
+  ];
 
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) {
-  }
+  constructor(
+    private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone,
+    private store: Store<any>,
+    private complaintActions: ComplaintActions,
+  ) {}
 
   ngOnInit() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -51,23 +67,35 @@ export class ComplaintComponent implements OnInit {
   }
 
   setPosition({ coords }, updatePosition = false) {
-    this.markedCoords = {
-      latitude: coords.lat,
-      longitude: coords.lng,
-    };
+    this.markedCoords.coordinates = [coords.lat, coords.lng];
     if (updatePosition) {
-      this.mapPosition = this.markedCoords;
+      this.form.location = { ...this.markedCoords };
     }
 
     if (this.geocoder) {
       this.geocoder.geocode({ location: coords }, (geocodeResults) => {
         if (geocodeResults && geocodeResults.length) {
           this.ngZone.run(() => {
-            this.location = geocodeResults[0].formatted_address;
+            this.mapPosition = geocodeResults[0].formatted_address;
           });
         }
       });
-
     }
+  }
+
+  updateImage(event: any) {
+    const files: FileList = event.srcElement.files;
+    const file = files.length ? files[0] : null;
+
+    this.form.image = file;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.imagePreview = e.target.result;
+    }
+    reader.readAsDataURL(file);
+  }
+
+  onSubmit(form) {
+    this.store.dispatch(this.complaintActions.createComplaint(form));
   }
 }
