@@ -65,8 +65,13 @@ export class ModelService<T extends IModel> {
    * @param {T} model
    * @returns {Observable<T>}
    */
-  public save(model: T): Observable<T> {
-    const options = new RequestOptions({body: model});
+  public save(model: T, asFormData = false): Observable<T> {
+    const options = new RequestOptions({ body: model });
+    if (asFormData) {
+      const formData = new FormData();
+      Object.entries(model).forEach(([key, value]) => formData.append(key, value));
+      return this.apiHttp.post(this.modelUrl, formData);
+    }
     if (model.id) {
       return this.apiHttp.put(this.modelUrl + model.id, options);
     } else {
