@@ -9,3 +9,11 @@ $fa-font-path: "~font-awesome/fonts";
 .pac-container {
   z-index: $zindex-modal + 1;
 }
+
+.modal-dialog {
+  max-width: 60rem;
+
+  .modal-content {
+    padding: 1rem 1.5rem;
+  }
+}

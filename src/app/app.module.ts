@@ -9,6 +9,7 @@ import { Ng2Webstorage } from 'ngx-webstorage';
 
 import { DjangoClientService } from './common/django-client';
 import { AuthService, AuthGuard } from './common/auth';
+import { ComplaintService } from './common/complaint';
 import { TrStoreModule } from './common/store/store.module';
 
 import { AppComponent } from './app.component';
@@ -46,6 +47,7 @@ const appRoutes: Routes = [
   providers: [
     DjangoClientService.provider(),
     AuthService,
+    ComplaintService,
     AuthGuard,
   ],
   bootstrap: [AppComponent]
