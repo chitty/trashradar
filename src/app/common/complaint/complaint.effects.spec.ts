@@ -2,11 +2,13 @@ import { EffectsTestingModule, EffectsRunner } from '@ngrx/effects/testing';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ComplaintService } from './complaint.service';
 import { ComplaintActions } from './complaint.actions';
 import { ComplaintEffects } from './complaint.effects';
 import { Complaint } from './complaint.model';
 import { initialComplaintState } from './complaint.state';
+import { Store } from '@ngrx/store';
 
 describe('ComplaintEffects', () => {
   const complaintMock: Complaint = {
@@ -31,6 +33,9 @@ describe('ComplaintEffects', () => {
   let complaintEffects: ComplaintEffects;
   let complaintActions: ComplaintActions;
   let complaintService: MockComplaintService;
+  let store;
+
+  const mockStore = new BehaviorSubject({});
 
   class MockComplaintService {
     public getAllPages(query: object): Observable<Complaint[]> {
@@ -54,6 +59,10 @@ describe('ComplaintEffects', () => {
         provide: ComplaintService,
         useClass: MockComplaintService,
       },
+      {
+        provide: Store,
+        useValue: mockStore,
+      }
     ]
   }));
 
@@ -62,6 +71,7 @@ describe('ComplaintEffects', () => {
     complaintService = TestBed.get(ComplaintService);
     complaintActions = TestBed.get(ComplaintActions);
     complaintEffects = TestBed.get(ComplaintEffects);
+    store = TestBed.get(Store);
   });
 
   describe('loadComplaints$', () => {
@@ -85,10 +95,18 @@ describe('ComplaintEffects', () => {
   });
 
   describe('createComplaint$', () => {
+    const userId = 1559;
+    mockStore.next({
+      auth: {
+        user: {
+          id: userId,
+        }
+      }
+    })
     it('should return a createComplaintSuccess, with the complaint, on success add', () => {
       runner.queue(complaintActions.createComplaint(complaintMock));
       complaintEffects.createComplaint$.subscribe((result) => {
-        expect(result).toEqual(complaintActions.createComplaintSuccess(complaintMock));
+        expect(result).toEqual(complaintActions.createComplaintSuccess({ ...complaintMock, owner: userId }));
       });
     });
 

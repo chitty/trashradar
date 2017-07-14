@@ -170,6 +170,20 @@ describe('ModelService', () => {
                                                 new RequestOptions({body: newElement}));
   });
 
+  it(`should call post method with FormData if form data flag was passed`, () => {
+    mockBackend.connections.subscribe((connection) => {
+      connection.mockRespond(mockResponse);
+    });
+
+    spyOn(apiClient, 'post').and.callThrough();
+    modelService.save(element, true).subscribe((result) => {
+      expect(result).toEqual(successBody, 'Response does not match');
+    });
+    const formData = new FormData();
+    Object.entries(element).forEach(([key, value]) => formData.append(key, value));
+    expect(apiClient.post).toHaveBeenCalledWith(modelUrl, formData);
+  });
+
   it(`should return the element being saved in case of success and call DjangoClientService's
       put method on save when the element has an id`, () => {
     mockBackend.connections.subscribe((connection) => {

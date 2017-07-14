@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { ComplaintActions } from '../../common/complaint';
 
 export class Coordinates {
-  type: 'Point';
+  type: string;
   coordinates: [number, number];
 }
 
