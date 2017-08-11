@@ -10,7 +10,7 @@
     <input type="password" id="inputPassword" class="form-control" placeholder="Password" required name="password" [(ngModel)]="credentials.password" #password>
     <div class="checkbox">
       <label>
-        <input type="checkbox" value="terms"> I agree with all the terms and conditions.
+        <input type="checkbox" name="terms" [(ngModel)]="acceptedTerms"> I agree with all the terms and conditions.
       </label>
     </div>
     <div *ngIf="errorMessage" class="alert alert-danger font-weight-bold" role="alert">
@@ -19,7 +19,7 @@
     <div *ngIf="successMessage" class="alert alert-success font-weight-bold" role="alert">
       {{successMessage}}
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="signUp()">Sign up</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!acceptedTerms" (click)="signUp()">Sign up</button>
     Already a member? <label class="simple-link" routerLink="/auth">Sign In</label>
   </form>
 
