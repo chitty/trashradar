@@ -21,7 +21,7 @@ export class ComplaintComponent implements OnInit {
     coordinates: [40.7485413, -73.98575770000002],
   };
   public form = {
-    image: null,
+    picture: null,
     location: { ...this.markedCoords },
     entity: null,
   };
@@ -87,7 +87,7 @@ export class ComplaintComponent implements OnInit {
     const files: FileList = event.srcElement.files;
     const file = files.length ? files[0] : null;
 
-    this.form.image = file;
+    this.form.picture = file;
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.imagePreview = e.target.result;

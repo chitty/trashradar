@@ -10,7 +10,7 @@
     </div>
     <div class="form-group">
       <label for="trash-image-input">Trash image</label>
-      <input id="trash-image-input" type="file" accept="image/*" name="image" (change)="updateImage($event)" class="form-control" required>
+      <input id="trash-image-input" type="file" accept="image/*" name="picture" (change)="updateImage($event)" class="form-control" required>
       <img [ngClass]="{ 'hidden-xs-up': !imagePreview }" style="max-width: 100%; height: auto;" id="preview" [src]="imagePreview" alt="preview">
     </div>
     <div class="form-group">

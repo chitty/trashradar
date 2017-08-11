@@ -110,12 +110,12 @@ describe('ComplaintComponent', () => {
     };
     spyOn(window, 'FileReader' as any).and.returnValue(({ readAsDataURL: jasmine.createSpy('read') }));
     component.updateImage(event);
-    expect(component.form.image).toEqual(null);
+    expect(component.form.picture).toEqual(null);
 
     const file = 'realFile';
     event.srcElement.files.push(file);
     component.updateImage(event);
-    expect(component.form.image).toEqual(file);
+    expect(component.form.picture).toEqual(file);
   });
 
   it('should dispatch on submit', () => {
