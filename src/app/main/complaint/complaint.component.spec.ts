@@ -121,7 +121,10 @@ describe('ComplaintComponent', () => {
   it('should dispatch on submit', () => {
     const mockForm = {
       data: true,
-      field: 'test',
+      location: {
+        type: 'test',
+        coordinates: [1, 2],
+      },
       object: {
         field: 'yes',
         array: [1, 2, 3],
@@ -129,6 +132,9 @@ describe('ComplaintComponent', () => {
     };
     component.onSubmit(mockForm);
     const complaintActions: ComplaintActions = TestBed.get(ComplaintActions);
-    expect(store.dispatch).toHaveBeenCalledWith(complaintActions.createComplaint(mockForm))
+    expect(store.dispatch).toHaveBeenCalledWith(complaintActions.createComplaint({
+      ...mockForm,
+      location: `${mockForm.location.type}(${mockForm.location.coordinates[0]} ${mockForm.location.coordinates[1]})`
+    }))
   });
 });

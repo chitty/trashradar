@@ -96,6 +96,9 @@ export class ComplaintComponent implements OnInit {
   }
 
   onSubmit(form) {
-    this.store.dispatch(this.complaintActions.createComplaint(form));
+    this.store.dispatch(this.complaintActions.createComplaint({
+      ...form,
+      location: `${form.location.type}(${form.location.coordinates[0]} ${form.location.coordinates[1]})`
+    }));
   }
 }
