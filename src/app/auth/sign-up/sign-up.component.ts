@@ -17,14 +17,15 @@ export class SignUpComponent  implements OnDestroy {
     password: '',
     email: ''
   };
+  public acceptedTerms = false;
   public loading;
   public errorMessage = '';
   public successMessage = '';
   private authStateSubscription: Subscription;
 
   constructor(private router: Router, private store: Store<any>, private authActions: AuthActions) {
-    this.authStateSubscription = this.store.select(getAuthState).subscribe(({ inProgress, newUser, error }) => {
-      if (newUser) {
+    this.authStateSubscription = this.store.select(getAuthState).subscribe(({ inProgress, user, error }) => {
+      if (user && !error) {
         this.successMessage = 'A verification message was sent to your email address.';
         this.errorMessage = '';
         return;

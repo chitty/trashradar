@@ -13,14 +13,12 @@ export const AuthReducer: ActionReducer<AuthState> = (state = initialAuthState, 
     case AuthActions.LOGIN_SUCCESS:
       return { ...state, inProgress: false, user: action.payload, isLoggedIn: true };
 
+    case AuthActions.SIGN_UP_FAILED:
     case AuthActions.LOGIN_FAILED:
       return { ...state, inProgress: false, error: action.payload };
 
     case AuthActions.SIGN_UP_SUCCESS:
-      return { ...state, inProgress: false, newUser: true };
-
-    case AuthActions.SIGN_UP_FAILED:
-      return { ...state, inProgress: false, newUser: false, error: action.payload };
+      return { ...state, inProgress: false, user: action.payload };
 
     case AuthActions.RESET_PASSWORD_SUCCESS:
       return { ...state, inProgress: false, resetPassword: true };
