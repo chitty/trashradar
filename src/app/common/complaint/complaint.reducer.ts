@@ -30,6 +30,7 @@ export const ComplaintReducer: ActionReducer<ComplaintState> = (state = initialC
           [complaint.id]: complaint
         }),
         selectedComplaintId: complaint.id,
+        error: null,
       };
     }
 
@@ -42,6 +43,7 @@ export const ComplaintReducer: ActionReducer<ComplaintState> = (state = initialC
           [complaint.id]: complaint
         }),
         selectedComplaintId: complaint.id,
+        error: null,
       };
     }
 
@@ -53,6 +55,7 @@ export const ComplaintReducer: ActionReducer<ComplaintState> = (state = initialC
         ids: state.ids.filter((id) => id !== complaint.id),
         entities: Object.assign({}, state.entities),
         selectedComplaintId: null,
+        error: null,
       };
     }
 
@@ -75,6 +78,8 @@ export const ComplaintReducer: ActionReducer<ComplaintState> = (state = initialC
     case ComplaintActions.UPDATE_COMPLAINT_FAIL:
     case ComplaintActions.REMOVE_COMPLAINT_FAIL:
     case ComplaintActions.LOAD_COMPLAINTS_FAIL:
+      return { ...state, error: action.payload };
+
     default: {
       return state;
     }

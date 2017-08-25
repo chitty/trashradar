@@ -1,14 +1,27 @@
 <div>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
   <h2>Create a complaint</h2>
-  <form>
-
+  <form (ngSubmit)="onSubmit(form)">
     <div class="form-group">
-      <label>Location</label>
-      <input placeholder="Search location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #locationInput [(ngModel)]="location" name="location">
-      <agm-map style="height: 40vh;" [latitude]="mapPosition.latitude" [longitude]="mapPosition.longitude" (mapClick)="setPosition($event)" [clickableIcons]=false [streetViewControl]=false>
-        <agm-marker [latitude]="markedCoords.latitude" [longitude]="markedCoords.longitude"></agm-marker>
+      <label for="location-input">Location</label>
+      <input id="location-input" placeholder="Search location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #locationInput [(ngModel)]="mapPosition" name="location" required>
+      <agm-map style="height: 40vh;" [latitude]="form.location.coordinates[0]" [longitude]="form.location.coordinates[1]" (mapClick)="setPosition($event)" [clickableIcons]=false [streetViewControl]=false>
+        <agm-marker [latitude]="markedCoords.coordinates[0]" [longitude]="markedCoords.coordinates[1]"></agm-marker>
       </agm-map>
     </div>
-    <button type="submit">Create</button>
+    <div class="form-group">
+      <label for="trash-image-input">Trash image</label>
+      <input id="trash-image-input" type="file" accept="image/*" name="picture" (change)="updateImage($event)" class="form-control" required>
+      <img [ngClass]="{ 'hidden-xs-up': !imagePreview }" style="max-width: 100%; height: auto;" id="preview" [src]="imagePreview" alt="preview">
+    </div>
+    <div class="form-group">
+      <label for="entitiy-selection">Entity</label>
+      <select id="entitiy-selection" name="entity" [(ngModel)]="form.entity" class="form-control">
+        <option *ngFor="let entity of staticEntities" [value]="entity.id">{{entity.name}}</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
   </form>
 </div>

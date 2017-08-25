@@ -87,7 +87,7 @@ export const getComplaintsByEntity = (state: ComplaintState, entity: number) => 
  * Return all complaints with a specified counter.
  *
  * @param {state} ComplaintState
- * @param {entity} number - entity
+ * @param {counter} number - counter
  */
 export const getComplaintsByCounter = (state: ComplaintState, counter: number) => {
   return state.ids.reduce((result, id) => {

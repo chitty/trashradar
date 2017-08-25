@@ -6,8 +6,6 @@ import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbModalStack } from '@ng-bootstrap/ng-bootstrap/modal/modal-stack';
 
 import { AuthActions } from '../../common/auth';
 import { MenuComponent } from './menu.component';
@@ -31,9 +29,7 @@ describe('MenuComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MenuComponent ],
-      imports: [ NgbModule ],
       providers: [
-        NgbModalStack,
         { provide: Store, useClass: MockStore, },
         { provide: AuthActions, useClass: MockAuthActions, },
         { provide: Router, useValue: router, },
