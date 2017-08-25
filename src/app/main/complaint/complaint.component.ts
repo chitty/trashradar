@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { MapsAPILoader } from '@agm/core';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs/Rx';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ComplaintActions } from '../../common/complaint';
+import { getComplaintState } from '../../common/store/reducers';
 
 export class Coordinates {
   type: string;
@@ -28,18 +31,35 @@ export class ComplaintComponent implements OnInit {
   public imagePreview = '';
   public mapPosition = '';
   public geocoder: google.maps.Geocoder;
+  // @todo: Get the real entities from the server
   public staticEntities = [
     { name: 'Real entity', id: 1 },
     { name: 'Gov\'na', id: 2 },
     { name: 'Da police', id: 3 },
   ];
+  public errorMessage = '';
+  public successMessage = '';
+  private complaintStateSubscription: Subscription;
 
   constructor(
+    public activeModal: NgbActiveModal,
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,
     private store: Store<any>,
     private complaintActions: ComplaintActions,
-  ) {}
+  ) {
+    this.complaintStateSubscription = this.store.select(getComplaintState)
+                                      .subscribe(({ ids, entities, selectedComplaintId, error }) => {
+      if ((error === null || error === undefined) && selectedComplaintId) {
+        this.successMessage = 'Complaint created succesfully!';
+        this.errorMessage = '';
+        this.closeModal(this.successMessage);
+        return;
+      } else if (error) {
+        this.errorHandler(error);
+      }
+    });
+  }
 
   ngOnInit() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -100,5 +120,22 @@ export class ComplaintComponent implements OnInit {
       ...form,
       location: `${form.location.type}(${form.location.coordinates[0]} ${form.location.coordinates[1]})`
     }));
+  }
+
+  private errorHandler(error) {
+    this.errorMessage = 'ERROR: '
+    if (typeof(error._body) === 'string' && error._body.indexOf('message') !== -1) {
+      this.errorMessage += JSON.parse(error._body).message;
+    } else if (typeof(error._body) === 'string' && error._body.indexOf('errors') !== -1) {
+      this.errorMessage += JSON.parse(error._body).errors;
+    } else {
+      this.errorMessage += 'Unforseen error.';
+    }
+    this.successMessage = '';
+    this.closeModal(this.errorMessage);
+  }
+
+  private closeModal(message) {
+    this.activeModal.close(message);
   }
 }

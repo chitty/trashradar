@@ -56,6 +56,7 @@ const addedData = {
 const nonEmptyState: ComplaintState = {
   ...addedData,
   selectedComplaintId: null,
+  error: null,
 };
 
 describe('ComplaintReducer', () => {
@@ -77,6 +78,7 @@ describe('ComplaintReducer', () => {
       ids: [],
       entities: {},
       selectedComplaintId: null,
+      error: null
     };
     expect(actual).toEqual(expected);
   });
@@ -88,14 +90,17 @@ describe('ComplaintReducer', () => {
       ids: [...state.ids, ...[complaintMock.id]],
       entities: Object.assign({}, state.entities, { [complaintMock.id]: complaintMock }),
       selectedComplaintId: complaintMock.id,
+      error: null
     };
     expect(actual).toEqual(expected);
   });
 
-  it('should be NOT add a complaint on CREATE_COMPLAINT_FAIL', () => {
+  it('should NOT add a complaint on CREATE_COMPLAINT_FAIL and set the error', () => {
     const state = mockedState();
     const actual = ComplaintReducer(state, complaintActions.createComplaintFail(complaintMock));
-    expect(actual).toEqual(state);
+    expect(actual.ids).toEqual([]);
+    expect(actual.entities).toEqual({});
+    expect(actual.error).toBeTruthy();
   });
 
   it('should add items on LOAD_COMPLAINTS_SUCCESS', () => {
@@ -136,14 +141,17 @@ describe('ComplaintReducer', () => {
         ...addedState,
         entities: { ...addedState.entities,  [updatedComplaint.id]: updatedComplaint },
         selectedComplaintId: updatedComplaint.id,
+        error: null
       };
       expect(actual).toEqual(expected);
     });
 
-    it('should NOT update the given complaint on UPDATE_COMPLAINT_FAIL', () => {
+    it('should NOT update the given complaint on UPDATE_COMPLAINT_FAIL and set the error', () => {
       const updatedComplaint = { ...complaintMock, description: 'derp', title: [] };
       const actual = ComplaintReducer(addedState, complaintActions.updateComplaintFail(updatedComplaint));
-      expect(actual).toEqual(addedState);
+      expect(actual.ids).toEqual(addedState.ids);
+      expect(actual.entities).toEqual(addedState.entities);
+      expect(actual.error).toBeTruthy();
     });
 
     it('should remove the given complaint on REMOVE_COMPLAINT_SUCCESS', () => {
@@ -156,9 +164,11 @@ describe('ComplaintReducer', () => {
       expect(actual).toEqual(expected);
     });
 
-    it('should NOT remove the given complaint on REMOVE_COMPLAINT_FAIL', () => {
+    it('should NOT remove the given complaint on REMOVE_COMPLAINT_FAIL and set the error', () => {
       const actual = ComplaintReducer(addedState, complaintActions.removeComplaintFail(complaintMock));
-      expect(actual).toEqual(addedState);
+      expect(actual.ids).toEqual(addedState.ids);
+      expect(actual.entities).toEqual(addedState.entities);
+      expect(actual.error).toBeTruthy();
     });
 
     it('getEntities should return all the entities of a ComplaintState', () => {

@@ -1,4 +1,3 @@
-
 <body>
 <app-menu></app-menu>
 <div class="container home text-center">
@@ -15,9 +14,14 @@
       </div>
     </div>
   </div>
+  <div *ngIf="complainCreationResult && setErrorColors" class="alert alert-danger font-weight-bold" role="alert">
+    {{complainCreationResult}}
+  </div>
+  <div *ngIf="complainCreationResult && !setErrorColors" class="alert alert-success font-weight-bold" role="alert">
+    {{complainCreationResult}}
+  </div>
   <div class="login-subscribe">
-    <button class="btn btn-outline-success my-2 my-sm-0">Login</button>
-    <button class="btn btn-outline-success my-2 my-sm-0">Subscribe</button>
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="openComplaintModal()">Report trash</button>
   </div>
   <a class="alert-link" href="#">Terms and Conditions</a>
   <h4>Sponsored By</h4>

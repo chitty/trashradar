@@ -6,6 +6,8 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { AgmCoreModule, MapsAPILoader } from '@agm/core';
 import { Store } from '@ngrx/store';
+import { BehaviorSubject } from 'rxjs/Rx';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { environment } from '../../../environments/environment';
 import { ComplaintComponent } from './complaint.component';
@@ -16,6 +18,7 @@ import { ComplaintActions } from '../../common/complaint';
 describe('ComplaintComponent', () => {
   let component: ComplaintComponent;
   let fixture: ComponentFixture<ComplaintComponent>;
+  let storeSubject: BehaviorSubject<object>;
   let store: MockStore;
   const testCoords: any = {
     coords: {
@@ -28,11 +31,19 @@ describe('ComplaintComponent', () => {
   let mapAPILoader: MapsAPILoader;
   const navigatorSpy = jasmine.createSpy('getCurrentPosition').and.callFake((func) => func(testCoords));
   navigator.geolocation.getCurrentPosition = navigatorSpy;
+
   class MockStore {
     public dispatch = jasmine.createSpy('dispatch');
+    public select = () => storeSubject;
+  }
+
+  class MockComplaintActions {
+    public createComplaint = jasmine.createSpy('createComplaint');
   }
 
   beforeEach(async(() => {
+    storeSubject = new BehaviorSubject({});
+
     TestBed.configureTestingModule({
       declarations: [ ComplaintComponent ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
@@ -44,8 +55,9 @@ describe('ComplaintComponent', () => {
         })
       ],
       providers: [
-        ComplaintActions,
+        NgbActiveModal,
         { provide: Store, useClass: MockStore },
+        { provide: ComplaintActions, useClass: MockComplaintActions },
       ]
     })
     .compileComponents();

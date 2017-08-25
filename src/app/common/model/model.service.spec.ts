@@ -34,8 +34,10 @@ describe('ModelService', () => {
 
   const modelUrl = '/model_url/';
   const query = { id: 10 };
-  const element: TestType = { id: 10, token: 'token', city: 'NY' };
+  const updateElement: TestType = { id: 10, token: 'newtoken', city: 'ATL' };
+  const element: TestType = { token: 'token', city: 'NY' };
   const successBody: TestType = element;
+  const successBodyUpdate: TestType = updateElement;
   const successBodyList: [TestType] = [successBody, successBody];
   const successBodyPaginated = {
     next: 'watever',
@@ -62,6 +64,12 @@ describe('ModelService', () => {
 
   const mockResponse = new Response(new ResponseOptions({
     body: JSON.stringify(successBody),
+    status: 200,
+    statusText: 'Success'
+  }));
+
+  const mockUpdateResponse = new Response(new ResponseOptions({
+    body: JSON.stringify(successBodyUpdate),
     status: 200,
     statusText: 'Success'
   }));
@@ -187,15 +195,15 @@ describe('ModelService', () => {
   it(`should return the element being saved in case of success and call DjangoClientService's
       put method on save when the element has an id`, () => {
     mockBackend.connections.subscribe((connection) => {
-      connection.mockRespond(mockResponse);
+      connection.mockRespond(mockUpdateResponse);
     });
 
     spyOn(apiClient, 'put').and.callThrough();
-    modelService.save(element).subscribe((result) => {
-      expect(result).toEqual(successBody, 'Response does not match');
+    modelService.save(updateElement).subscribe((result) => {
+      expect(result).toEqual(successBodyUpdate, 'Response does not match');
     });
-    expect(apiClient.put).toHaveBeenCalledWith(modelUrl + element.id,
-                                               new RequestOptions({body: element}));
+    expect(apiClient.put).toHaveBeenCalledWith(modelUrl + updateElement.id,
+                                               new RequestOptions({body: updateElement}));
   });
 
   it('should rethrow the error on save in case of error', () => {

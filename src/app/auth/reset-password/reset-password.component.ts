@@ -14,7 +14,7 @@ export class ResetPasswordComponent implements OnDestroy {
   public username = '';
   public errorMessage = '';
   public successMessage = '';
-  private authStateSubscription: Subscription
+  private authStateSubscription: Subscription;
 
   constructor(private store: Store<any>, private authActions: AuthActions) {
     this.authStateSubscription = this.store.select(getAuthState).subscribe(({ isLoggedIn, inProgress, resetPassword, error }) => {

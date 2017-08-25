@@ -1,4 +1,7 @@
 <div>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
   <h2>Create a complaint</h2>
   <form (ngSubmit)="onSubmit(form)">
     <div class="form-group">

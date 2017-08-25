@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthActions } from '../../common/auth';
-import { ComplaintComponent } from '../complaint/complaint.component';
 
 @Component({
   selector: 'app-menu',
@@ -16,15 +15,10 @@ export class MenuComponent implements OnInit {
   constructor(
     private authActions: AuthActions,
     private router: Router,
-    private store: Store<any>,
-    private modalService: NgbModal
+    private store: Store<any>
   ) {}
 
   ngOnInit() {
-  }
-
-  openComplaintModal() {
-    this.modalService.open(ComplaintComponent);
   }
 
   logout() {
