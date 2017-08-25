@@ -10,6 +10,9 @@ export class AuthActions {
   public static RESET_PASSWORD = '[Auth] RESET_PASSWORD';
   public static RESET_PASSWORD_SUCCESS = '[Auth] RESET_PASSWORD SUCCESS';
   public static RESET_PASSWORD_FAILED = '[Auth] RESET_PASSWORD FAILED';
+  public static SIGN_UP = '[Auth] SIGN_UP';
+  public static SIGN_UP_SUCCESS = '[Auth] SIGN_UP Success';
+  public static SIGN_UP_FAILED = '[Auth] SIGN_UP Failed';
 
   public login = ActionCreatorFactory.create(AuthActions.LOGIN);
   public loginSuccess = ActionCreatorFactory.create(AuthActions.LOGIN_SUCCESS);
@@ -18,4 +21,7 @@ export class AuthActions {
   public resetPassword = ActionCreatorFactory.create(AuthActions.RESET_PASSWORD);
   public resetPasswordSuccess = ActionCreatorFactory.create(AuthActions.RESET_PASSWORD_SUCCESS);
   public resetPasswordFailed = ActionCreatorFactory.create(AuthActions.RESET_PASSWORD_FAILED);
+  public signUp = ActionCreatorFactory.create(AuthActions.SIGN_UP);
+  public signUpSuccess = ActionCreatorFactory.create(AuthActions.SIGN_UP_SUCCESS);
+  public signUpFailed = ActionCreatorFactory.create(AuthActions.SIGN_UP_FAILED);
 }

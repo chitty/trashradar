@@ -33,5 +33,14 @@ export class AuthEffects {
       .catch((error) => of(this.authActions.resetPasswordFailed(error)))
     );
 
+  @Effect()
+  public signUp$: Observable<Action> = this.actions$
+    .ofType(AuthActions.SIGN_UP)
+    .map(toPayload)
+    .switchMap((credentials) => this.authService.register(credentials)
+      .map((user) => this.authActions.signUpSuccess(user))
+      .catch((error) => of(this.authActions.signUpFailed(error)))
+    );
+
   constructor(private actions$: Actions, private authService: AuthService, private authActions: AuthActions) {}
 }

@@ -11,7 +11,7 @@ describe('AuthEffects', () => {
   const mockUser = {
     id: 2,
     username: 'test',
-    email: 'user',
+    email: 'user@mail.com',
     token: 'realToken',
   };
 
@@ -32,6 +32,10 @@ describe('AuthEffects', () => {
 
     public resetPassword(username: string) {
       return username === mockUser.username ? Observable.of() : Observable.throw(error);
+    }
+
+    public register(credentials: any) {
+      return credentials.id === mockUser.id ? Observable.of(mockUser) : Observable.throw(error);
     }
   }
   beforeEach(() => TestBed.configureTestingModule({
@@ -103,6 +107,26 @@ describe('AuthEffects', () => {
       authEffects.logout$.subscribe(data => {
         expect(data).toEqual('logout');
       });
+    });
+  });
+
+  describe('signUp$', () => {
+    it('should return a sign up success action on successful user registration', () => {
+      const expected = authActions.signUpSuccess(mockUser);
+      runner.queue(authActions.signUp(mockUser));
+
+      authEffects.signUp$.subscribe((data => {
+        expect(data).toEqual(expected);
+      }));
+    });
+
+    it('should return a sign up fail action on fail', () => {
+      const expected = authActions.signUpFailed(error);
+      runner.queue(authActions.signUp({}));
+
+      authEffects.login$.subscribe((data => {
+        expect(data).toEqual(expected);
+      }));
     });
   });
 });

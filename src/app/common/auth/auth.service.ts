@@ -37,7 +37,8 @@ export class AuthService {
   }
 
   public register(userData: RegistrationCredentials): Observable<Authorization> {
-    return this.httpService.post('/api/v1/user/', userData)
+    return this.httpService.post('/api/v1/accounts', {username: userData.username, email: userData.email,
+                                                      password: userData.password})
       .map((user: Authorization) => {
         this.httpService.setAuthToken(user.token);
 

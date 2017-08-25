@@ -5,11 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 export const routes: Routes = [
   { path: '', children: [
       { path: '', component: LoginComponent },
       { path: 'reset_password', component: ResetPasswordComponent },
+      { path: 'sign_up', component: SignUpComponent },
     ]
   }
 ];
@@ -19,6 +21,7 @@ export const routes: Routes = [
   declarations: [
     LoginComponent,
     ResetPasswordComponent,
+    SignUpComponent,
   ],
   imports: [
     CommonModule,
