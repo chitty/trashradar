@@ -21,13 +21,15 @@ export class SignUpComponent  implements OnDestroy {
   public loading;
   public errorMessage = '';
   public successMessage = '';
+  private signUpRequested = false;
   private authStateSubscription: Subscription;
 
   constructor(private router: Router, private store: Store<any>, private authActions: AuthActions) {
     this.authStateSubscription = this.store.select(getAuthState).subscribe(({ inProgress, user, error }) => {
-      if (user && !error) {
+      if (this.signUpRequested && user && !error) {
         this.successMessage = 'A verification message was sent to your email address.';
         this.errorMessage = '';
+        this.signUpRequested = false;
         return;
       }
       this.loading = inProgress;
@@ -39,6 +41,7 @@ export class SignUpComponent  implements OnDestroy {
   }
 
   signUp() {
+    this.signUpRequested = true;
     this.store.dispatch(this.authActions.signUp(this.credentials));
   }
 
