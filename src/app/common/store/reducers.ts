@@ -3,10 +3,12 @@ import { EffectsModule } from '@ngrx/effects';
 
 import * as auth from '../auth';
 import * as complaint from '../complaint';
+import * as entity from '../entity';
 
 export interface AppState {
   auth: auth.AuthState;
   complaint: complaint.ComplaintState;
+  entity: entity.EntityState;
 }
 
 export const moduleReducers = [{
@@ -15,6 +17,9 @@ export const moduleReducers = [{
 }, {
   reducer: { complaint: complaint.ComplaintReducer },
   actions: complaint.ComplaintActions,
+}, {
+  reducer: { entity: entity.EntityReducer },
+  actions: entity.EntityActions,
 }];
 
 export const moduleEffects = [
@@ -29,11 +34,14 @@ export const getUser = createSelector(getAuthState, auth.getUser);
 export const isAuthInProgress = createSelector(getAuthState, auth.getProgress);
 export const getAuthError: any = createSelector(getAuthState, auth.getError);
 
+export const getEntityState = (state: AppState): entity.EntityState => state.entity;
+export const getAllEntities = createSelector(getEntityState, entity.getAll);
+
 export const getComplaintState = (state: AppState): complaint.ComplaintState => state.complaint;
 export const getComplaintIds = createSelector(getComplaintState, complaint.getIds);
 export const getComplaintEntities = createSelector(getComplaintState, complaint.getEntities);
 export const getAllComplaints = createSelector(getComplaintState, complaint.getAll);
-export const getComplaintsByEntity = (entity) => (state) => complaint.getComplaintsByEntity(state.complaint, entity);
+export const getComplaintsByEntity = (thisEntity) => (state) => complaint.getComplaintsByEntity(state.complaint, thisEntity);
 export const getComplaintsByCounter = (counter) => (state) => complaint.getComplaintsByCounter(state.complaint, counter);
 export const getComplaintsByState = (currentState) => (state) => complaint.getComplaintsByState(state.complaint, currentState);
 export const getComplaintsByOwner = (owner) => (state) => complaint.getComplaintsByOwner(state.complaint, owner);

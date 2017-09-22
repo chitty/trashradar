@@ -16,7 +16,9 @@ import { Entity } from './entity.model';
 export class EntityEffects {
   @Effect()
   public loadEntities$: Observable<Action> = this.actions$
-    .ofType(EntityActions.LOAD_ENTITIES)
+    .do((action) => console.log(`Received ${action.type}`))
+    .filter((action) => action.type === EntityActions.LOAD_ENTITIES)
+    // .ofType(EntityActions.LOAD_ENTITIES)
     .switchMap(() => this.entityService.getAllPages())
       .map((entities) => this.entityActions.loadEntitiesSuccess(entities))
       .catch((error) => of(this.entityActions.loadEntitiesFail(error))

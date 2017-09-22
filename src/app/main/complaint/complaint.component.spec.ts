@@ -12,6 +12,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../environments/environment';
 import { ComplaintComponent } from './complaint.component';
 import { ComplaintActions } from '../../common/complaint';
+import { EntityActions } from '../../common/entity';
 
 // TODO: fix the multiple inclusion error.
 // Current agm version defines a global google variable which makes mocking hard.
@@ -25,8 +26,6 @@ describe('ComplaintComponent', () => {
       latitude: 12,
       longitude: 11,
     }
-    // type: 'Point',
-    // coordinates: [12, 11],
   };
   let mapAPILoader: MapsAPILoader;
   const navigatorSpy = jasmine.createSpy('getCurrentPosition').and.callFake((func) => func(testCoords));
@@ -39,6 +38,10 @@ describe('ComplaintComponent', () => {
 
   class MockComplaintActions {
     public createComplaint = jasmine.createSpy('createComplaint');
+  }
+
+  class MockEntityActions {
+    public loadEntities = jasmine.createSpy('loadEntities');
   }
 
   beforeEach(async(() => {
@@ -58,6 +61,7 @@ describe('ComplaintComponent', () => {
         NgbActiveModal,
         { provide: Store, useClass: MockStore },
         { provide: ComplaintActions, useClass: MockComplaintActions },
+        { provide: EntityActions, useClass: MockEntityActions },
       ]
     })
     .compileComponents();

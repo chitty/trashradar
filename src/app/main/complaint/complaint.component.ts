@@ -5,7 +5,8 @@ import { Subscription } from 'rxjs/Rx';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ComplaintActions } from '../../common/complaint';
-import { getComplaintState } from '../../common/store/reducers';
+import { EntityActions } from '../../common/entity';
+import { getComplaintState, getEntityState, getAllEntities } from '../../common/store/reducers';
 
 export class Coordinates {
   type: string;
@@ -28,6 +29,7 @@ export class ComplaintComponent implements OnInit {
     location: { ...this.markedCoords },
     entity: null,
   };
+
   public imagePreview = '';
   public mapPosition = '';
   public geocoder: google.maps.Geocoder;
@@ -37,6 +39,7 @@ export class ComplaintComponent implements OnInit {
     { name: 'Gov\'na', id: 2 },
     { name: 'Da police', id: 3 },
   ];
+
   public errorMessage = '';
   public successMessage = '';
   private complaintStateSubscription: Subscription;
@@ -47,7 +50,9 @@ export class ComplaintComponent implements OnInit {
     private ngZone: NgZone,
     private store: Store<any>,
     private complaintActions: ComplaintActions,
+    private entityActions: EntityActions,
   ) {
+
     this.complaintStateSubscription = this.store.select(getComplaintState)
                                       .subscribe(({ ids, entities, selectedComplaintId, error }) => {
       if ((error === null || error === undefined) && selectedComplaintId) {
@@ -62,6 +67,9 @@ export class ComplaintComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('This is supposed to dispatch the action!!!');
+    this.store.dispatch(this.entityActions.loadEntities());
+    console.log('Did it work?');
     navigator.geolocation.getCurrentPosition((position) => {
       const coords = {
         lat: position.coords.latitude,
